@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Love Story</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI, sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#ff6a88,#ff99ac);
+color:white;
+overflow-x:hidden;
+}
+
+/* floating hearts */
+
+.heart{
+position:fixed;
+bottom:-20px;
+font-size:20px;
+animation:float 8s linear infinite;
+opacity:0.7;
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+100%{transform:translateY(-110vh);}
+}
+
+/* petals */
+
+.petal{
+position:fixed;
+top:-10px;
+width:10px;
+height:10px;
+background:pink;
+border-radius:50%;
+opacity:0.7;
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(360deg);
+}
+}
+
+header{
+text-align:center;
+padding:80px 20px;
+}
+
+header h1{
+font-size:3rem;
+margin-bottom:10px;
+}
+
+header p{
+opacity:0.9;
+}
+
+/* counter */
+
+.counter{
+font-size:1.6rem;
+margin-top:20px;
+}
+
+/* sections */
+
+section{
+padding:80px 10%;
+display:flex;
+flex-wrap:wrap;
+align-items:center;
+gap:40px;
+}
+
+.story-text{
+flex:1;
+min-width:250px;
+}
+
+.story-text h2{
+font-size:2rem;
+margin-bottom:10px;
+}
+
+.story-text p{
+line-height:1.6;
+}
+
+.story-img{
+flex:1;
+min-width:250px;
+}
+
+.story-img img{
+width:100%;
+height:350px;
+object-fit:cover;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* quote */
+
+.quote{
+text-align:center;
+font-size:1.8rem;
+padding:100px 20px;
+font-style:italic;
+}
+
+/* gallery */
+
+.gallery{
+text-align:center;
+padding:80px 10%;
+}
+
+.gallery-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+}
+
+.gallery-grid img{
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:15px;
+}
+
+footer{
+text-align:center;
+padding:40px;
+font-size:14px;
+}
+
+/* music button */
+
+.music-btn{
+position:fixed;
+right:20px;
+bottom:20px;
+background:white;
+color:black;
+border:none;
+padding:10px 16px;
+border-radius:30px;
+cursor:pointer;
+}
+
+
+/* lock screen */
+
+#lockScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(135deg,#ff6a88,#ff99ac);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.lock-box{
+background:white;
+color:black;
+padding:30px;
+border-radius:20px;
+text-align:center;
+width:300px;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+.lock-box input{
+width:100%;
+padding:10px;
+margin:15px 0;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+.lock-box button{
+padding:10px 20px;
+border:none;
+background:#ff6a88;
+color:white;
+border-radius:20px;
+cursor:pointer;
+}
+
+#errorMsg{
+color:red;
+font-size:14px;
+margin-top:10px;
+}
+
+.btn-timeline{
+margin-top:20px;
+padding:12px 24px;
+border:none;
+background:white;
+color:#ff6a88;
+font-weight:bold;
+border-radius:30px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.btn-timeline:hover{
+transform:scale(1.05);
+}
+
+
+.timeline-container{
+position:relative;
+max-width:800px;
+}
+
+.timeline-container::after{
+content:'';
+position:absolute;
+width:4px;
+background:white;
+top:0;
+bottom:0;
+left:50%;
+}
+
+.timeline-item{
+padding:20px 40px;
+position:relative;
+width:50%;
+cursor:pointer;
+}
+
+.timeline-item:nth-child(odd){
+left:0;
+text-align:right;
+}
+
+.timeline-item:nth-child(even){
+left:50%;
+text-align:left;
+}
+
+.timeline-content{
+background:white;
+color:black;
+padding:15px;
+border-radius:15px;
+}
+
+.timeline-date{
+font-size:14px;
+margin-bottom:5px;
+opacity:0.8;
+}
+
+.timeline-item::after{
+content:'';
+position:absolute;
+width:15px;
+height:15px;
+background:#ff6a88;
+border-radius:50%;
+top:25px;
+right:-8px;
+}
+
+.timeline-item:nth-child(even)::after{
+left:-8px;
+}
+
+/* popup background */
+
+.popup{
+display:none;
+position:fixed;
+z-index:9999;
+padding-top:60px;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+}
+
+/* popup image */
+
+.popup-content{
+display:block;
+margin:auto;
+max-width:90%;
+max-height:80%;
+border-radius:15px;
+animation:zoom 0.4s ease;
+}
+
+/* animation */
+
+@keyframes zoom{
+from{transform:scale(0.7); opacity:0;}
+to{transform:scale(1); opacity:1;}
+}
+
+/* close button */
+
+.close{
+position:absolute;
+top:20px;
+right:30px;
+color:white;
+font-size:40px;
+font-weight:bold;
+cursor:pointer;
+}
+
+body.locked{
+overflow:hidden;
+}
+
+</style>
+</head>
+
+<div id="imagePopup" class="popup">
+  <span class="close" onclick="closePopup()">&times;</span>
+  <img class="popup-content" id="popupImg">
+</div>
+
+<body>
+
+<header>
+
+<br>
+<button onclick="toggleTimeline()" class="btn-timeline">
+View Our Journey 💞
+</button>    
+
+<h1>Our Love Story ❤️</h1>
+<p>A journey of love, memories, and forever</p>
+
+<div class="counter">
+Together for <span id="days"></span> days 💖
+</div>
+
+</header>
+
+<section>
+
+<div class="story-text">
+<h2>How We Met</h2>
+<p>
+The moment we met on 19th march 2012 something felt different.
+What started as a simple conversation slowly became the most beautiful story of my life.
+</p>
+</div>
+
+<div class="story-img">
+<img src="images/photo1.jpg">
+</div>
+
+</section>
+
+<section>
+
+<div class="story-img">
+<img src="images/photo2.jpg"></div>
+
+<div class="story-text">
+<h2>Our Memories</h2>
+<p>
+From small moments to unforgettable adventures,
+every second with you became a memory I cherish forever.
+</p>
+</div>
+
+</section>
+
+<div class="quote">
+"Every love story is beautiful, but ours is my favorite." 💕
+</div>
+
+<section>
+
+<div class="story-text">
+<h2>Today</h2>
+<p>
+Today we celebrate our love, our journey, and every beautiful memory we created together.
+</p>
+</div>
+
+<div class="story-img">
+<img src="images/photo3.png"></div>
+
+</section>
+
+<section>
+
+<div class="story-img">
+<img src="images/photo4.jpg"></div>
+
+<div class="story-text">
+<h2>The Future</h2>
+<p>
+Our story is still being written.
+More laughter, more dreams, more beautiful memories waiting for us.
+</p>
+</div>
+
+</section>
+
+<section class="gallery">
+
+<h2>Our Moments 📸</h2>
+
+<div class="gallery-grid">
+
+<img src="images/photo5.jpg">
+<img src="images/photo6.jpg">
+<img src="images/photo7.jpg">
+<img src="images/photo8.jpeg">
+
+</div>
+
+</section>
+
+<div id="lockScreen">
+  <div class="lock-box">
+    <h2>Enter Password 💖</h2>
+    <input type="password" id="passwordInput" placeholder="Our secret..." />
+    <button onclick="checkPassword()">Unlock</button>
+    <p id="errorMsg"></p>
+  </div>
+</div>
+
+
+<section id="timelineSection" style="display:none; flex-direction:column; align-items:center;">
+
+<h2 style="margin-bottom:40px;">Our Journey Together 💞</h2>
+
+<div class="timeline-container">
+
+<div class="timeline-item" onclick="openImage('images/photo1.jpg')">
+<div class="timeline-date">DATE 1</div>
+<div class="timeline-content">
+<h3>The Beginning</h3>
+<p>Our first McDonald’s together… a simple moment that became unforgettable.</p>
+</div>
+</div>
+
+<div class="timeline-item" onclick="openImage('timeline/photo2.jpg')">
+<div class="timeline-date">DATE 2</div>
+<div class="timeline-content">
+<h3>First Night Out</h3>
+<p>Our first clubbing night… loud world, but all I saw was you.</p>
+</div>
+</div>
+
+<div class="timeline-item" onclick="openImage('timeline/photo3.jpg')">
+<div class="timeline-date">DATE 3</div>
+<div class="timeline-content">
+<h3>Our First Trip</h3>
+<p>A journey where I realized I never want to travel without you.</p>
+</div>
+</div>
+
+<div class="timeline-item" onclick="openImage('timeline/photo4.jpg')">
+<div class="timeline-date">DATE 4</div>
+<div class="timeline-content">
+<h3>The Beach</h3>
+<p>Waves, silence, and us… the world felt perfect.</p>
+</div>
+</div>
+
+<div class="timeline-item" onclick="openImage('timeline/photo5.jpg')">
+<div class="timeline-date">DATE 5</div>
+<div class="timeline-content">
+<h3>Pre-Wedding</h3>
+<p>The day we promised forever.</p>
+</div>
+</div>
+
+<div class="timeline-item" onclick="openImage('timeline/photo6.jpg')">
+<div class="timeline-date">DATE 6</div>
+<div class="timeline-content">
+<h3>Our Wedding</h3>
+<p>The day we became one.</p>
+</div>
+</div>
+
+<div class="timeline-item" onclick="openImage('timeline/photo7.jpeg')">
+<div class="timeline-date">DATE 7</div>
+<div class="timeline-content">
+<h3>England Trip</h3>
+<p>Different country, same love—home is wherever you are.</p>
+</div>
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+Made with ❤️ for our anniversary
+</footer>
+
+<button class="music-btn" onclick="toggleMusic()">🎵 Music</button>
+
+<audio id="music" loop>
+<source src="music/song.mp3"></audio>
+<script>
+
+/* relationship counter */
+
+const startDate = new Date("2023-01-01"); // CHANGE_ME_DATE
+const today = new Date();
+
+const diff = today - startDate;
+const days = Math.floor(diff / (1000*60*60*24));
+
+document.getElementById("days").innerText = days;
+
+/* floating hearts */
+
+setInterval(()=>{
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="💖";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(15+Math.random()*20)+"px";
+document.body.appendChild(heart);
+
+setTimeout(()=>heart.remove(),8000);
+
+},600);
+
+/* petals */
+
+for(let i=0;i<25;i++){
+
+let petal=document.createElement("div");
+petal.className="petal";
+petal.style.left=Math.random()*100+"vw";
+petal.style.animationDuration=(5+Math.random()*5)+"s";
+petal.style.opacity=Math.random();
+
+document.body.appendChild(petal);
+
+}
+
+/* music */
+
+function toggleMusic(){
+
+const music=document.getElementById("music");
+
+if(music.paused){
+music.play();
+}else{
+music.pause();
+}
+
+}
+
+
+function checkPassword(){
+
+const correctPassword = "192012"; 
+
+const input = document.getElementById("passwordInput").value;
+
+if(input === correctPassword){
+document.getElementById("lockScreen").style.display = "none";
+}else{
+document.getElementById("errorMsg").innerText = "Wrong password 💔";
+}
+
+}
+
+function toggleTimeline(){
+const section = document.getElementById("timelineSection");
+
+if(section.style.display === "none"){
+section.style.display = "flex";
+section.scrollIntoView({behavior:"smooth"});
+}else{
+section.style.display = "none";
+}
+}
+
+// /* image popup */
+
+// function openImage(src){
+// let imgWindow = window.open("");
+// imgWindow.document.write("<img src='" + src + "' style='width:100%'>");
+// }
+
+
+function openImage(src){
+const popup = document.getElementById("imagePopup");
+const img = document.getElementById("popupImg");
+
+img.src = src;
+popup.style.display = "block";
+}
+
+function closePopup(){
+document.getElementById("imagePopup").style.display = "none";
+}
+
+/* close when clicking outside image */
+
+window.onclick = function(event){
+const popup = document.getElementById("imagePopup");
+if(event.target === popup){
+popup.style.display = "none";
+}
+}
+
+document.getElementById("passwordInput").addEventListener("keypress", function(event){
+  if(event.key === "Enter"){
+    checkPassword();
+  }
+});
+
+
+</script>
+
+</body>
+</html>
